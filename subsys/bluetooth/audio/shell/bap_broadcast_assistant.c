@@ -535,6 +535,13 @@ static bool broadcast_source_found(struct bt_data *data, void *user_data)
 	param.num_subgroups = 1;
 	param.subgroups = &auto_scan.subgroup;
 
+	char le_addr[BT_ADDR_LE_STR_LEN];
+    bt_addr_le_to_str(&param.addr, le_addr, sizeof(le_addr));
+
+    shell_print(ctx_shell, "Call bt_bap_broadcast_assistant_add_src");
+    shell_print(ctx_shell, "- addr = %s, adv_sid = %u, pa_sync = %d, broadcast_id = 0x%x, pa_interval = %u, num_subgroups = %u", 
+        le_addr, param.adv_sid, param.pa_sync ? 1 : 0, param.broadcast_id, param.pa_interval, param.num_subgroups);
+
 	err = bt_bap_broadcast_assistant_add_src(default_conn, &param);
 	if (err) {
 		shell_print(ctx_shell, "Failed to add source: %d", err);
